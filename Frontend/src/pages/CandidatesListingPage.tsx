@@ -96,7 +96,7 @@ export default function CandidatesListingPage() {
           columns={columns}
           checkboxSelection
           initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[10]}
           sx={{
             '& .MuiDataGrid-columnHeaderTitle': {
               fontWeight: 'bold',
