@@ -33,12 +33,12 @@ const stringToColor = (string: string) => {
 
 function Navbar() {
   const location = useLocation();
+  const dispatch = useDispatch();
   const userName = useSelector((state: RootState) => state.user.name);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-const dispatch = useDispatch();
   const avatarInitial = userName ? userName.charAt(0).toUpperCase() : "";
   const avatarColor = userName ? stringToColor(userName) : "";
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -48,17 +48,21 @@ const navigate = useNavigate();
     dispatch(clearUser());
 
   }
+
   const handleCloseMenu = () => {
     setAnchorElUser(null);
   };
+
   const handleUserLogout = () =>{
     handleCloseMenu();
     handleLogout();
     navigate("/sign-in");
   }
+
   const handleLogin = () =>{
     navigate("/sign-in");
   }
+
   return (
     <AppBar position="static" elevation={0}  >
         <Toolbar
@@ -75,7 +79,7 @@ const navigate = useNavigate();
                     {avatarInitial}
                   </Avatar>
                 </IconButton>
-            ) : location.pathname === "/sign-in" || location.pathname === "/candidate-registration-page"  && userName && (<Button variant="contained" color="warning" onClick={handleLogin}>Login</Button>)}
+            ) : location.pathname === "/sign-in" || location.pathname === "/candidate-registration-page"  ? null : (<Button variant="contained" color="warning" onClick={handleLogin}>Login</Button>) }
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

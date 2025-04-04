@@ -9,11 +9,11 @@ import CandidateRegistrationPage from "./pages/CandidateRegistrationPage";
 import CheckAuth from "./components/CheckAuth";
 
 const App = () => {
-  const name = useSelector((state: RootState) => state.user.name);
+  // const name = useSelector((state: RootState) => state.user.name);
   const auth = useSelector((state: RootState) => state.user.auth);
   console.log(auth);
   
-  const isAuthenticated = !!name;
+  const isAuthenticated = auth == "1" ? true : false;
   return (
     <Box>
       <Navbar />

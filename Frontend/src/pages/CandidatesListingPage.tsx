@@ -10,8 +10,8 @@ const columns: GridColDef[] = [
   { field: 'id', headerName: 'ID', width: 70 },
   { field: 'name', headerName: 'Name', width: 150 },
   { field: 'email', headerName: 'Email', width: 200 },
-  { field: 'mobile', headerName: 'Mobile', width: 150 },
-  { field: 'degree', headerName: 'Degree', width: 120 },
+  { field: 'mobile', headerName: 'Mobile', width: 100 },
+  { field: 'degree', headerName: 'Degree', width: 110 },
   { field: 'department', headerName: 'Department', width: 150 },
   {
     field: 'degree_percentage',
@@ -40,7 +40,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-const paginationModel = { page: 0, pageSize: 5 };
+const paginationModel = { page: 0, pageSize: 10 };
 
 export default function CandidatesListingPage() {
   const apiRef = useGridApiRef();
@@ -89,7 +89,7 @@ export default function CandidatesListingPage() {
         </Button>
       </Box>
 
-      <Paper sx={{ height: 700, width: '100%' }}>
+      <Paper sx={{ height: 630, width: '100%' }}>
         <DataGrid
           apiRef={apiRef}
           rows={rows}
@@ -97,7 +97,11 @@ export default function CandidatesListingPage() {
           checkboxSelection
           initialState={{ pagination: { paginationModel } }}
           pageSizeOptions={[5, 10]}
-          sx={{ border: 0 }}
+          sx={{
+            '& .MuiDataGrid-columnHeaderTitle': {
+              fontWeight: 'bold',
+            },
+          }}
         />
       </Paper>
     </Container>
