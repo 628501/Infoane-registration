@@ -11,9 +11,10 @@ interface User {
   name: string;
   emailId: string;
   id: number;
+  auth: string;
 }
 
-interface Employee {
+export interface Employee {
   id: number;
   name: string;
   email: string;
@@ -56,6 +57,7 @@ export const register = async (
       location,
       relocate
     });
+    
     return response.data;
   } catch (error: any) {
     console.error('Registration error:', error.response?.data || error);
@@ -66,11 +68,11 @@ export const register = async (
 export const login = async (email: string, password: string): Promise<User> => {
   try {
     const { data } = await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });
-    const { token, name, emailId, id } = data;
+    const { token, name, emailId, id, auth } = data;
 
     document.cookie = `token=${token}; path=/; max-age=${30 * 24 * 60 * 60}; Secure; SameSite=Strict`;
 
-    return { name, emailId, id };
+    return { name, emailId, id, auth };
   } catch (error: any) {
     console.error('Error logging in:', error.response?.data || error);
     throw error.response?.data || error;
