@@ -1,6 +1,7 @@
 import { Router } from "express";
 import bcrypt from "bcryptjs";
 import { generateTokenResponse } from "../Token/Token.js";
+import { connection } from "../server.js";
 
 const router = Router();
 
@@ -33,6 +34,7 @@ router.post("/login", async (req, res) => {
       id: user.id,
       name: user.name,
       emailId: user.email,
+      auth: user.isAuthorised
     });
   } catch (error) {
     console.error("Error logging in:", error);
@@ -55,17 +57,19 @@ router.post('/register', async (req, res) => {
   } = req.body;
 
   try {
+    const canRelocate = relocate === true ?   "No" : "Yes";
+    
     const emailCheckQuery = 'SELECT * FROM employee_registration WHERE email = ?';
     const mobileCheckQuery = 'SELECT * FROM employee_registration WHERE mobile = ?';
 
-    db.query(emailCheckQuery, [email], (emailErr, emailResults) => {
+    connection.query(emailCheckQuery, [email], (emailErr, emailResults) => {
       if (emailErr) return res.status(500).json({ error: 'Server error' , status: false});
 
       if (emailResults.length > 0) {
         return res.status(400).json({ error: 'Email already exists' });
       }
 
-      db.query(mobileCheckQuery, [mobile], (mobileErr, mobileResults) => {
+      connection.query(mobileCheckQuery, [mobile], (mobileErr, mobileResults) => {
         if (mobileErr) return res.status(500).json({ error: 'Server error' });
 
         if (mobileResults.length > 0) {
@@ -78,9 +82,9 @@ router.post('/register', async (req, res) => {
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
-        db.query(
+        connection.query(
           insertQuery,
-          [name, email, mobile, degree, department, degree_percentage, sslc_percentage, hsc_percentage, location, relocate],
+          [name, email, mobile, degree, department, degree_percentage, sslc_percentage, hsc_percentage, location, canRelocate],
           (insertErr, insertResult) => {
             if (insertErr) {
               console.error(insertErr);
@@ -106,7 +110,7 @@ router.post("/logout", (req, res) => {
 router.get("/employees", (req, res) => {
   const query = "SELECT * FROM employee_registration";
 
-  db.query(query, (err, results) => {
+  connection.query(query, (err, results) => {
     if (err) {
       console.error("Error fetching employees:", err);
       return res.status(500).json({ error: "Server error" });
