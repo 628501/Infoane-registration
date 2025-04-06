@@ -24,10 +24,14 @@ const userSlice = createSlice({
     },
     setAuth: (state, action: PayloadAction<string>) => {
       state.auth = action.payload;
-      localStorage.setItem("isAuthorised", action.payload)
+      localStorage.setItem("isAuthorised", action.payload);
+    },
+    removeAuth: (state) => {
+      state.auth = null;
+      localStorage.removeItem("isAuthorised");
     }
   },
 });
 
-export const { setUser, clearUser, setAuth } = userSlice.actions;
+export const { setUser, clearUser, setAuth, removeAuth } = userSlice.actions;
 export default userSlice.reducer;

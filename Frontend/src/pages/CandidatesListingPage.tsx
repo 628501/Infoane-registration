@@ -7,12 +7,30 @@ import { Employee, getEmployees } from '../UserService/UserService';
 import { useEffect, useState } from 'react';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Name', width: 150 },
-  { field: 'email', headerName: 'Email', width: 200 },
-  { field: 'mobile', headerName: 'Mobile', width: 100 },
-  { field: 'degree', headerName: 'Degree', width: 110 },
-  { field: 'department', headerName: 'Department', width: 150 },
+  { field: 'id',
+    headerName: 'ID',
+    width: 70 
+  },
+  { field: 'name',
+    headerName: 'Name',
+    width: 150 
+  },
+  { field: 'email',
+    headerName: 'Email',
+    width: 200 
+  },
+  { field: 'mobile',
+    headerName: 'Mobile',
+    width: 100
+  },
+  { field: 'degree',
+    headerName: 'Degree',
+    width: 110 
+  },
+  { field: 'department',
+    headerName: 'Department',
+    width: 150 
+  },
   {
     field: 'degree_percentage',
     headerName: 'Degree %',
@@ -49,7 +67,7 @@ export default function CandidatesListingPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getEmployees();
+        const response = await getEmployees(); // change as candidates those are not employees
         setRows(response.employees);
       } catch (error) {
         toast.error('Failed to fetch employees');
