@@ -14,7 +14,7 @@ import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { logout } from "../UserService/UserService";
-import { clearUser } from "../slices/userSlice";
+import { clearUser, removeAuth } from "../slices/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const stringToColor = (string: string) => {
@@ -46,6 +46,7 @@ function Navbar() {
   const handleLogout = () =>{
     logout();
     dispatch(clearUser());
+    dispatch(removeAuth());
 
   }
 

@@ -82,8 +82,6 @@ export const login = async (email: string, password: string): Promise<User> => {
 export const logout = async () => {
   try {
     await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
-
-    // Clear cookie
     document.cookie = `token=; path=/; max-age=0; Secure; SameSite=Strict`;
   } catch (error: any) {
     console.error('Error logging out:', error.response?.data || error);
