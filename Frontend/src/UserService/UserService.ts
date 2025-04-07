@@ -65,12 +65,12 @@ export const register = async (
   }
 };
 
-export const login = async (email: string, password: string): Promise<User> => {
+export const login = async (email: string, password: string, token: any): Promise<User> => {
   try {
-    const { data } = await axios.post(`${API_URL}/login`, { email, password }, { withCredentials: true });
-    const { token, name, emailId, id, auth } = data;
+    const { data } = await axios.post(`${API_URL}/login`, { email, password, token }, { withCredentials: true });
+    const { token: authToken, name, emailId, id, auth } = data;
 
-    document.cookie = `token=${token}; path=/; max-age=${30 * 24 * 60 * 60}; Secure; SameSite=Strict`;
+    document.cookie = `token=${authToken}; path=/; max-age=${30 * 24 * 60 * 60}; Secure; SameSite=Strict`;
 
     return { name, emailId, id, auth };
   } catch (error: any) {
@@ -79,9 +79,9 @@ export const login = async (email: string, password: string): Promise<User> => {
   }
 };
 
-export const logout = async () => {
+export const logout = async (email: any) => {
   try {
-    await axios.post(`${API_URL}/logout`, {}, { withCredentials: true });
+    await axios.post(`${API_URL}/logout`, { email }, { withCredentials: true });
     document.cookie = `token=; path=/; max-age=0; Secure; SameSite=Strict`;
   } catch (error: any) {
     console.error('Error logging out:', error.response?.data || error);
@@ -95,6 +95,16 @@ export const getEmployees = async (): Promise<EmployeesResponse> => {
     return response.data;
   } catch (error: any) {
     console.error('Error fetching employees:', error.response?.data || error);
+    throw error.response?.data || error;
+  }
+};
+
+export const getToken = async (email: string): Promise<any> => {
+  try {
+    const response: AxiosResponse<{ token: any }> = await axios.post(`${API_URL}/get-token`, { email }, { withCredentials: true });
+    return response.data.token;
+  } catch (error: any) {
+    console.error('Error fetching token:', error.response?.data || error);
     throw error.response?.data || error;
   }
 };

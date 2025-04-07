@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
   name: string | null;
-  auth: string | null;
+  email: string | null;
+  token: string | null;
 }
 
 const initialState: UserState = {
   name: localStorage.getItem("UserName") || null,
-  auth: localStorage.getItem("isAuthorised") || null,
+  email: localStorage.getItem("UserEmail") || null,
+  token: null,
 };
 
 const userSlice = createSlice({
@@ -18,20 +20,21 @@ const userSlice = createSlice({
       state.name = action.payload;
       localStorage.setItem("UserName", action.payload);
     },
+    setUserEmail: (state, action: PayloadAction<string>) => {
+      state.email = action.payload;
+      localStorage.setItem("UserEmail", action.payload);
+    },
     clearUser: (state) => {
       state.name = null;
+      state.token = null;
       localStorage.removeItem("UserName");
+      localStorage.removeItem("UserEmail");
     },
-    setAuth: (state, action: PayloadAction<string>) => {
-      state.auth = action.payload;
-      localStorage.setItem("isAuthorised", action.payload);
+    tokenAcess: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
     },
-    removeAuth: (state) => {
-      state.auth = null;
-      localStorage.removeItem("isAuthorised");
-    }
   },
 });
 
-export const { setUser, clearUser, setAuth, removeAuth } = userSlice.actions;
+export const { setUser, clearUser, setUserEmail, tokenAcess } = userSlice.actions;
 export default userSlice.reducer;

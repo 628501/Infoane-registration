@@ -10,9 +10,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { login } from "../UserService/UserService";
+import { getToken, login } from "../UserService/UserService";
 import { useDispatch } from "react-redux";
-import { setAuth, setUser } from "../slices/userSlice";
+import { setUser, setUserEmail, tokenAcess } from "../slices/userSlice";
 import { toast } from "react-toastify";
 
 type FormValues = {
@@ -45,11 +45,12 @@ const SignInPage = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const { email, password } = data;
     try {
-      const result = await login(email, password);
+      const token = await getToken(email);
+      const result = await login(email, password, token);
       setExistError("");
-      console.log(result.id, result.name, result.emailId, result.auth);
-      dispatch(setAuth(result.auth));
       dispatch(setUser(result.name));
+      dispatch(setUserEmail(result.emailId));
+      dispatch(tokenAcess(token));
       reset();
       navigate("/");
       toast.success("Sign in Successfully!");

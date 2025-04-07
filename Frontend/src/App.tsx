@@ -3,18 +3,10 @@ import { Route, Routes } from "react-router-dom";
 import SignInPage from "./pages/SignInPage";
 import Navbar from "./components/Navbar";
 import CandidatesListingPage from "./pages/CandidatesListingPage";
-import { useSelector } from "react-redux";
-import { RootState } from "./store/store";
 import CandidateRegistrationPage from "./pages/CandidateRegistrationPage";
 import CheckAuth from "./components/CheckAuth";
-import AssessmentProtection from "./components/AssesmentProtection";
 
 const App = () => {
-  const auth = useSelector((state: RootState) => state.user.auth);
-  console.log(auth);
-  
-  const isAuthenticated = auth == "1" ? true : false;
-  console.log(isAuthenticated);
   
   return (
     <Box>
@@ -22,19 +14,18 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={(<CheckAuth isAuthenticated={isAuthenticated}>
+          element={(<CheckAuth>
             <CandidatesListingPage />
             </CheckAuth> )}
         />
         <Route
           path="/candidate-registration-page"
-          element={(<CheckAuth isAuthenticated={isAuthenticated}>
+          element={(<CheckAuth>
             <CandidateRegistrationPage />
             </CheckAuth> )}
         />
         <Route path="/Sign-in" element={<SignInPage />} />
       </Routes>
-      <AssessmentProtection />
     </Box>
   );
 };

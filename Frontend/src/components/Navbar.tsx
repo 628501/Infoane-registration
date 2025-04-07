@@ -14,7 +14,7 @@ import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import { logout } from "../UserService/UserService";
-import { clearUser, removeAuth } from "../slices/userSlice";
+import { clearUser } from "../slices/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const stringToColor = (string: string) => {
@@ -34,20 +34,18 @@ const stringToColor = (string: string) => {
 function Navbar() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const userName = useSelector((state: RootState) => state.user.name);
+  const user = useSelector((state: RootState) => state.user);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const avatarInitial = userName ? userName.charAt(0).toUpperCase() : "";
-  const avatarColor = userName ? stringToColor(userName) : "";
+  const avatarInitial = user.name ? user.name.charAt(0).toUpperCase() : "";
+  const avatarColor = user.name  ? stringToColor(user.name) : "";
   const navigate = useNavigate();
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
   const handleLogout = () =>{
-    logout();
+    logout(user.email);
     dispatch(clearUser());
-    dispatch(removeAuth());
-
   }
 
   const handleCloseMenu = () => {
@@ -74,7 +72,7 @@ function Navbar() {
             <img src={logo} height="40px" alt="Logo" />
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            {userName ? (
+            {user.token ? (
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar sx={{ backgroundColor: avatarColor }}>
                     {avatarInitial}
