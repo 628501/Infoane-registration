@@ -10,7 +10,7 @@ import {
   Alert,
 } from "@mui/material";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { register as registerCandidate } from "../UserService/UserService";
 
 type FormValues = {
@@ -34,10 +34,21 @@ const CandidateRegistrationPage = () => {
     reset,
     control,
   } = useForm<FormValues>();
-
+  
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  useEffect(() => {
+    fetch("http://ip-api.com/json/")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+  }, []);
+  
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data.relocate);
+    
    await registerCandidate(
       data.name,
       data.email,
@@ -67,7 +78,7 @@ const CandidateRegistrationPage = () => {
         mx: "auto",
       }}
     >
-      {formSubmitted ? (
+      { formSubmitted ? (
         <Alert severity="success" sx={{ fontSize: "1rem" }}>
           Registration successful!
         </Alert>

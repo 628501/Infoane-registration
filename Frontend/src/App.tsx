@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
 import CandidateRegistrationPage from "./pages/CandidateRegistrationPage";
 import CheckAuth from "./components/CheckAuth";
+import AssessmentProtection from "./components/AssesmentProtection";
 
 const App = () => {
   const auth = useSelector((state: RootState) => state.user.auth);
@@ -33,6 +34,7 @@ const App = () => {
         />
         <Route path="/Sign-in" element={<SignInPage />} />
       </Routes>
+      <AssessmentProtection />
     </Box>
   );
 };

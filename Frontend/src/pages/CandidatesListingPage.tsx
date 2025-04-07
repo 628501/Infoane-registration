@@ -54,7 +54,7 @@ const columns: GridColDef[] = [
     field: 'relocate',
     headerName: 'Relocate?',
     width: 120,
-    type: 'boolean',
+    type: 'string',
   },
 ];
 
