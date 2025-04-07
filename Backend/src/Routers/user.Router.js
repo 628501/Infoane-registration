@@ -55,9 +55,10 @@ router.post('/register', async (req, res) => {
     location,
     relocate,
   } = req.body;
-
+  console.log("relocate" , relocate);
+  
   try {
-    const canRelocate = relocate === true ?   "No" : "Yes";
+    const canRelocate = relocate === true ?   "Yes" : "No";
     
     const emailCheckQuery = 'SELECT * FROM employee_registration WHERE email = ?';
     const mobileCheckQuery = 'SELECT * FROM employee_registration WHERE mobile = ?';
