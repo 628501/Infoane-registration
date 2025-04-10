@@ -12,18 +12,21 @@ const initialState: UserState = {
   name: null,
   email: null,
   isAuthenticated: null,
-  isLoggedIn: null
+  isLoggedIn: null,
 };
 
 export const login = createAsyncThunk(
   "user/login",
-  async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+  async (
+    credentials: { email: string; password: string },
+    { rejectWithValue }
+  ) => {
     try {
-      const response = await axiosInstance.post<{ name: string, accessToken: any, email: string }>(
-        '/login',
-        credentials,
-        { withCredentials: true }
-      );
+      const response = await axiosInstance.post<{
+        name: string;
+        accessToken: any;
+        email: string;
+      }>("/login", credentials, { withCredentials: true });
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Login failed");
@@ -31,14 +34,17 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk("user/logout", async (email: string, { rejectWithValue }) => {
-  try {
-    await axiosInstance.post('/logout', { email }, { withCredentials: true });
-    return true;
-  } catch (error: any) {
-    return rejectWithValue(error.response?.data || "Logout failed");
+export const logout = createAsyncThunk(
+  "user/logout",
+  async (email: string, { rejectWithValue }) => {
+    try {
+      await axiosInstance.post("/logout", { email }, { withCredentials: true });
+      return true;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "Logout failed");
+    }
   }
-});
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -70,7 +76,7 @@ const userSlice = createSlice({
         state.isAuthenticated = false;
         state.name = null;
         localStorage.removeItem("accessToken");
-      })
+      });
   },
 });
 

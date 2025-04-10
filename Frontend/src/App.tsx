@@ -11,24 +11,30 @@ const App = () => {
     <Box>
       <Navbar />
       <Routes>
-        <Route path="/candidate-list" element={
-          <CheckAuth>
-            <CandidatesListingPage />
-          </CheckAuth>
-          } />
+        <Route
+          path="/candidate-list"
+          element={
+            <CheckAuth>
+              <CandidatesListingPage />
+            </CheckAuth>
+          }
+        />
         <Route
           path="/candidate-registration-page"
           element={
             <CheckAuth>
               <CandidateRegistrationPage />
             </CheckAuth>
-        }
+          }
         />
-        <Route path="/" element={
-          <CheckAuth>
-            <SignInPage />
-          </CheckAuth>
-           } />
+        <Route
+          path="/"
+          element={
+            <CheckAuth>
+              <SignInPage />
+            </CheckAuth>
+          }
+        />
       </Routes>
     </Box>
   );
