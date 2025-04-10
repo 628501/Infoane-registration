@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:5000/api/users',

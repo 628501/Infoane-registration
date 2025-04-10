@@ -64,7 +64,6 @@ export const register = async (
 
 export const getEmployees = async (): Promise<EmployeesResponse> => {
   try {
-    console.log("hi");
     const response: AxiosResponse<EmployeesResponse> = await axiosInstance.get('/employees', { withCredentials: true });
     return response.data;
   } catch (error: any) {
