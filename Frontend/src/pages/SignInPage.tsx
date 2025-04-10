@@ -41,7 +41,7 @@ const SignInPage = () => {
       await dispatch(login({ email, password })).unwrap();
       setExistError("");
       reset();
-      navigate("/");
+      navigate("/candidate-list");
       toast.success("Sign in Successfully!");
     } catch (err: any) {
       setExistError(err.response?.data?.error || "Login failed!");

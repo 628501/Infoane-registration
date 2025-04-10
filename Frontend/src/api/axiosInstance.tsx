@@ -40,11 +40,11 @@ axiosInstance.interceptors.response.use(
           return axiosInstance(originalRequest);
         } catch (refreshError) {
           console.error("Token refresh failed", refreshError);
-          window.location.href = "/sign-in";
+          window.location.href = "/";
           return Promise.reject(refreshError);
         }
       } else {
-        window.location.href = "/sign-in";
+        window.location.href = "/";
         return Promise.reject(error);
       }
     }
