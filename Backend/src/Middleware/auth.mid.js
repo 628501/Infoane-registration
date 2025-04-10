@@ -4,8 +4,6 @@ import { connection } from '../server.js';
 
 export const authenticateJWT = (req, res, next) => {
     const token = req.headers['authorization']?.split(' ')[1];
-    console.log('MidTok', token);
-    console.log("hi");
   
     if (!token) {
       return res.status(UNAUTHORIZED).json({ message: 'No token provided' });
@@ -22,8 +20,6 @@ export const authenticateJWT = (req, res, next) => {
 
   export const authenticateSession = (req, res, next) => {
     const sessionId = req.cookies['sessionId']; 
-    console.log('MidId:', sessionId);
-    console.log("hi");
     if (!sessionId) {
       return res.status(401).json({ message: "Session expired or invalid" });
     }
