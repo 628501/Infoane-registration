@@ -1,12 +1,11 @@
-import { AxiosResponse } from 'axios';
-import axiosInstance from '../api/axiosInstance';
-
+import { AxiosResponse } from "axios";
+import axiosInstance from "../api/axiosInstance";
 
 interface RegisterResponse {
   message: string;
   id: number;
 }
-export interface Employee {
+export interface Candidate {
   id: number;
   name: string;
   email: string;
@@ -19,8 +18,8 @@ export interface Employee {
   location: string;
   relocate: boolean;
 }
-interface EmployeesResponse {
-  employees: Employee[];
+interface CandidatesResponse {
+  employees: Candidate[];
 }
 
 export const register = async (
@@ -36,32 +35,38 @@ export const register = async (
   relocate: boolean
 ): Promise<RegisterResponse> => {
   try {
-    const response: AxiosResponse<RegisterResponse> = await axiosInstance.post('/register', {
-      name,
-      email,
-      mobile,
-      degree,
-      department,
-      degree_percentage,
-      sslc_percentage,
-      hsc_percentage,
-      location,
-      relocate
-    });
+    const response: AxiosResponse<RegisterResponse> = await axiosInstance.post(
+      "/register",
+      {
+        name,
+        email,
+        mobile,
+        degree,
+        department,
+        degree_percentage,
+        sslc_percentage,
+        hsc_percentage,
+        location,
+        relocate,
+      }
+    );
 
     return response.data;
   } catch (error: any) {
-    console.error('Registration error:', error.response?.data || error);
+    console.error("Registration error:", error.response?.data || error);
     throw error.response?.data || error;
   }
 };
 
-export const getCandidates = async (): Promise<EmployeesResponse> => {
+export const getCandidates = async (): Promise<CandidatesResponse> => {
   try {
-    const response: AxiosResponse<EmployeesResponse> = await axiosInstance.get('/candidate', { withCredentials: true });
+    const response: AxiosResponse<CandidatesResponse> = await axiosInstance.get(
+      "/candidate",
+      { withCredentials: true }
+    );
     return response.data;
   } catch (error: any) {
-    console.error('Error fetching employees:', error.response?.data || error);
+    console.error("Error fetching employees:", error.response?.data || error);
     throw error.response?.data || error;
   }
 };

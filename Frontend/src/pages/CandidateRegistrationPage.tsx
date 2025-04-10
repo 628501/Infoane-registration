@@ -32,37 +32,55 @@ const CandidateRegistrationPage = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    watch,
     control,
   } = useForm<FormValues>();
-  
+
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [mobileError, setMobileError] = useState("");
+
+  const emailErr = watch("email");
+  const mobileErr = watch("mobile");
 
   useEffect(() => {
-    fetch("http://ip-api.com/json/")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-      })
-  }, []);
-  
+    if (emailError) {
+      setEmailError("");
+    }
+  }, [emailErr]);
+
+  useEffect(() => {
+    if (mobileError) {
+      setMobileError("");
+    }
+  }, [mobileErr]);
+
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data.relocate);
-    
-   await registerCandidate(
-      data.name,
-      data.email,
-      data.mobile,
-      data.degree,
-      data.department,
-      data.degree_percentage,
-      data.sslc_percentage,
-      data.hsc_percentage,
-      data.location,
-      data.relocate
-    );
-    setFormSubmitted(true);
-    reset();
+    try {
+      await registerCandidate(
+        data.name,
+        data.email,
+        data.mobile,
+        data.degree,
+        data.department,
+        data.degree_percentage,
+        data.sslc_percentage,
+        data.hsc_percentage,
+        data.location,
+        data.relocate
+      );
+      setFormSubmitted(true);
+      reset();
+    } catch (err: any) {
+      console.log(err.error);
+      if (err.error === "Email already exists" ) {
+        setEmailError(err.error);
+      }
+      if (err.error === "Mobile number already exists") {
+        setMobileError(err.error);
+      }
+    }
   };
 
   return (
@@ -115,8 +133,8 @@ const CandidateRegistrationPage = () => {
                 message: "Invalid email format",
               },
             })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            error={!!errors.email || !!emailError}
+            helperText={errors.email?.message || emailError}
           />
 
           <TextField
@@ -134,8 +152,8 @@ const CandidateRegistrationPage = () => {
                 message: "Enter valid 10-digit mobile number",
               },
             })}
-            error={!!errors.mobile}
-            helperText={errors.mobile?.message}
+            error={!!errors.mobile || !!mobileError}
+            helperText={errors.mobile?.message || mobileError}
           />
 
           <TextField
@@ -227,7 +245,7 @@ const CandidateRegistrationPage = () => {
               </RadioGroup>
             )}
           />
-          {errors.relocate && (
+          { errors.relocate && (
             <Typography color="error" fontSize="0.875rem">
               {errors.relocate.message}
             </Typography>
