@@ -31,7 +31,7 @@ router.post("/login", async (req, res) => {
     }
     const sessionId = uuidv4();
     const accessToken = jwt.sign({ id: user.name }, process.env.SECRET_KEY, {
-      expiresIn: "1m",
+      expiresIn: "15m",
     });
     const refreshToken = jwt.sign({ id: user.name }, process.env.REFRESH_KEY, {
       expiresIn: "30d",
@@ -88,7 +88,7 @@ router.post("/refresh", (req, res) => {
     if (err) return res.sendStatus(UNAUTHORIZED);
 
     const newAccessToken = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-      expiresIn: "1m",
+      expiresIn: "15m",
     });
 
     res.cookie("accessToken", newAccessToken, {
