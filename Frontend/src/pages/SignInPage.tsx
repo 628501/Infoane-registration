@@ -10,10 +10,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { getToken, login } from "../UserService/UserService";
-import { useDispatch } from "react-redux";
-import { setUser, setUserEmail, tokenAcess } from "../slices/userSlice";
+import { AppDispatch } from "../store/store";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { login } from "../slices/userSlice";
 
 type FormValues = {
   email: string;
@@ -22,19 +22,12 @@ type FormValues = {
 
 const SignInPage = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm<FormValues>();
-
-  const dispatch = useDispatch();
+  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormValues>();
   const [showPassword, setShowPassword] = useState(false);
   const [existError, setExistError] = useState("");
   const emailValue = watch("email");
   const passwordValue = watch("password");
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (existError) {
@@ -45,17 +38,13 @@ const SignInPage = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const { email, password } = data;
     try {
-      const token = await getToken(email);
-      const result = await login(email, password, token);
+      await dispatch(login({ email, password })).unwrap();
       setExistError("");
-      dispatch(setUser(result.name));
-      dispatch(setUserEmail(result.emailId));
-      dispatch(tokenAcess(token));
       reset();
       navigate("/");
       toast.success("Sign in Successfully!");
     } catch (err: any) {
-      setExistError(err.response.data.error);
+      setExistError(err.response?.data?.error || "Login failed!");
     }
   };
 
@@ -67,10 +56,7 @@ const SignInPage = () => {
       onSubmit={handleSubmit(onSubmit)}
       sx={{
         width: { xs: "90%", sm: "400px", md: "450px" },
-        height: "auto",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         flexDirection: "column",
         gap: "20px",
         padding: "40px",
@@ -112,7 +98,7 @@ const SignInPage = () => {
         variant="outlined"
         placeholder="Your password"
         {...register("password", { required: "Password is required" })}
-        error={!!errors.email || !!existError}
+        error={!!errors.password || !!existError}
         helperText={errors.password?.message || existError}
         slotProps={{
           input: {

@@ -1,19 +1,11 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axiosInstance from '../api/axiosInstance';
 
-const API_URL = 'http://localhost:5000/api/users';
 
 interface RegisterResponse {
   message: string;
   id: number;
 }
-
-interface User {
-  name: string;
-  emailId: string;
-  id: number;
-  auth: string;
-}
-
 export interface Employee {
   id: number;
   name: string;
@@ -26,6 +18,11 @@ export interface Employee {
   hsc_percentage: number;
   location: string;
   relocate: boolean;
+}
+
+interface Dashboard{
+  message: string;
+  user: string;
 }
 
 interface EmployeesResponse {
@@ -45,7 +42,7 @@ export const register = async (
   relocate: boolean
 ): Promise<RegisterResponse> => {
   try {
-    const response: AxiosResponse<RegisterResponse> = await axios.post(`${API_URL}/register`, {
+    const response: AxiosResponse<RegisterResponse> = await axiosInstance.post('/register', {
       name,
       email,
       mobile,
@@ -65,33 +62,10 @@ export const register = async (
   }
 };
 
-export const login = async (email: string, password: string, token: any): Promise<User> => {
-  try {
-    const { data } = await axios.post(`${API_URL}/login`, { email, password, token }, { withCredentials: true });
-    const { token: authToken, name, emailId, id, auth } = data;
-
-    document.cookie = `token=${authToken}; path=/; max-age=${30 * 24 * 60 * 60}; Secure; SameSite=Strict`;
-
-    return { name, emailId, id, auth };
-  } catch (error: any) {
-    console.error('Error logging in:', error.response?.data || error);
-    throw error.response?.data || error;
-  }
-};
-
-export const logout = async (email: any) => {
-  try {
-    await axios.post(`${API_URL}/logout`, { email }, { withCredentials: true });
-    document.cookie = `token=; path=/; max-age=0; Secure; SameSite=Strict`;
-  } catch (error: any) {
-    console.error('Error logging out:', error.response?.data || error);
-    throw error.response?.data || error;
-  }
-};
-
 export const getEmployees = async (): Promise<EmployeesResponse> => {
   try {
-    const response: AxiosResponse<EmployeesResponse> = await axios.get(`${API_URL}/employees`, { withCredentials: true });
+    console.log("hi");
+    const response: AxiosResponse<EmployeesResponse> = await axiosInstance.get('/employees', { withCredentials: true });
     return response.data;
   } catch (error: any) {
     console.error('Error fetching employees:', error.response?.data || error);
@@ -99,12 +73,14 @@ export const getEmployees = async (): Promise<EmployeesResponse> => {
   }
 };
 
-export const getToken = async (email: string): Promise<any> => {
+export const getDashboardData = async (): Promise<Dashboard> => {
   try {
-    const response: AxiosResponse<{ token: any }> = await axios.post(`${API_URL}/get-token`, { email }, { withCredentials: true });
-    return response.data.token;
+    console.log("Fetching dashboard data");
+    const response: AxiosResponse<Dashboard> = await axiosInstance.get('/dashboard', { withCredentials: true });
+    return response.data;
   } catch (error: any) {
-    console.error('Error fetching token:', error.response?.data || error);
+    console.error('Error fetching dashboard data:', error.response?.data || error);
     throw error.response?.data || error;
   }
 };
+

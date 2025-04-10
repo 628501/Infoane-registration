@@ -1,7 +1,7 @@
 import { DataGrid, GridColDef, useGridApiRef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { Box, Button, Container, Typography } from '@mui/material';
-import * as XLSX from 'xlsx'; // for Excel export
+import * as XLSX from 'xlsx';
 import { toast } from 'react-toastify';
 import { Employee, getEmployees } from '../UserService/UserService';
 import { useEffect, useState } from 'react';
@@ -65,16 +65,17 @@ export default function CandidatesListingPage() {
   const [rows, setRows] = useState<Employee[]>([]);
 
   useEffect(() => {
+    console.log('loading');
+    
     const fetchData = async () => {
       try {
-        const response = await getEmployees(); // change as candidates those are not employees
+        const response = await getEmployees();
         setRows(response.employees);
       } catch (error) {
         toast.error('Failed to fetch employees');
       }
     };
-
-    fetchData();
+    fetchData()
   }, []);
 
   const handleDownload = () => {

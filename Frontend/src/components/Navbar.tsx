@@ -12,9 +12,8 @@ import {
 } from "@mui/material";
 import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import { logout } from "../UserService/UserService";
-import { clearUser } from "../slices/userSlice";
+import { AppDispatch, RootState } from "../store/store";
+import { clearUser, logout } from "../slices/userSlice";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const stringToColor = (string: string) => {
@@ -33,18 +32,18 @@ const stringToColor = (string: string) => {
 
 function Navbar() {
   const location = useLocation();
-  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const avatarInitial = user.name ? user.name.charAt(0).toUpperCase() : "";
   const avatarColor = user.name  ? stringToColor(user.name) : "";
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
-
+ 
   const handleLogout = () =>{
-    logout(user.email);
+    dispatch(logout(user.email!));
     dispatch(clearUser());
   }
 
@@ -72,13 +71,13 @@ function Navbar() {
             <img src={logo} height="40px" alt="Logo" />
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            {user.token ? (
+            {user.isLoggedIn && user.isAuthenticated  ? (
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar sx={{ backgroundColor: avatarColor }}>
                     {avatarInitial}
                   </Avatar>
                 </IconButton>
-            ) : location.pathname === "/sign-in" || location.pathname === "/candidate-registration-page"  ? null : (<Button variant="contained" color="warning" onClick={handleLogin}>Login</Button>) }
+            ) : location.pathname === "/sign-in" || location.pathname === "/candidate-registration-page"  ? "" : (<Button variant="contained" color="warning" onClick={handleLogin}>Login</Button>) }
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
