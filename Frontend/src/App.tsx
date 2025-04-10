@@ -4,18 +4,31 @@ import SignInPage from "./pages/SignInPage";
 import Navbar from "./components/Navbar";
 import CandidatesListingPage from "./pages/CandidatesListingPage";
 import CandidateRegistrationPage from "./pages/CandidateRegistrationPage";
+import CheckAuth from "./components/CheckAuth";
 
 const App = () => {
   return (
     <Box>
       <Navbar />
       <Routes>
-        <Route path="/" element={<CandidatesListingPage />} />
+        <Route path="/candidate-list" element={
+          <CheckAuth>
+            <CandidatesListingPage />
+          </CheckAuth>
+          } />
         <Route
           path="/candidate-registration-page"
-          element={<CandidateRegistrationPage />}
+          element={
+            <CheckAuth>
+              <CandidateRegistrationPage />
+            </CheckAuth>
+        }
         />
-        <Route path="/Sign-in" element={<SignInPage />} />
+        <Route path="/" element={
+          <CheckAuth>
+            <SignInPage />
+          </CheckAuth>
+           } />
       </Routes>
     </Box>
   );

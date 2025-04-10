@@ -54,11 +54,11 @@ function Navbar() {
   const handleUserLogout = () => {
     handleCloseMenu();
     handleLogout();
-    navigate("/sign-in");
+    navigate("/");
   };
 
   const handleLogin = () => {
-    navigate("/sign-in");
+    navigate("/");
   };
 
   return (
@@ -81,7 +81,7 @@ function Navbar() {
                 {avatarInitial}
               </Avatar>
             </IconButton>
-          ) : location.pathname === "/sign-in" ||
+          ) : location.pathname === "/" ||
             location.pathname === "/candidate-registration-page" ? (
             ""
           ) : (
