@@ -25,8 +25,7 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response && error.response.status === 401) {
-      const refreshToken = getCookie("refreshToken");
-      if (refreshToken && !originalRequest._retry) {
+      if (!originalRequest._retry) {
         originalRequest._retry = true;
         try {
           const refreshResponse = await axiosInstance.post(
@@ -35,6 +34,7 @@ axiosInstance.interceptors.response.use(
             { withCredentials: true }
           );
           const newAccessToken = refreshResponse.data.accessToken;
+          console.log("new:", newAccessToken);
           localStorage.setItem("accessToken", newAccessToken);
           originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
           return axiosInstance(originalRequest);

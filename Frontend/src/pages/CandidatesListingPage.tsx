@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import { Box, Button, Container, Typography } from "@mui/material";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
-import { Employee, getCandidates } from "../UserService/UserService";
+import { Candidate, getCandidates } from "../UserService/UserService";
 import { useEffect, useState } from "react";
 
 const columns: GridColDef[] = [
@@ -44,7 +44,7 @@ const paginationModel = { page: 0, pageSize: 10 };
 
 export default function CandidatesListingPage() {
   const apiRef = useGridApiRef();
-  const [rows, setRows] = useState<Employee[]>([]);
+  const [rows, setRows] = useState<Candidate[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
