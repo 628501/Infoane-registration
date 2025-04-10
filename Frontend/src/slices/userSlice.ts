@@ -33,7 +33,7 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk("user/logout", async (email: string, { rejectWithValue }) => {
   try {
-    await axiosInstance.post('/logout', {email}, { withCredentials: true });
+    await axiosInstance.post('/logout', { email }, { withCredentials: true });
     return true;
   } catch (error: any) {
     return rejectWithValue(error.response?.data || "Logout failed");
@@ -59,8 +59,8 @@ const userSlice = createSlice({
         state.email = action.payload.email;
         state.isLoggedIn = true;
         const local = localStorage.getItem("accessToken");
-        if(local){
-            state.isAuthenticated = true;
+        if (local) {
+          state.isAuthenticated = true;
         }
       })
       .addCase(login.rejected, (state) => {

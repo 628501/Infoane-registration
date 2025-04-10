@@ -19,12 +19,6 @@ export interface Employee {
   location: string;
   relocate: boolean;
 }
-
-interface Dashboard{
-  message: string;
-  user: string;
-}
-
 interface EmployeesResponse {
   employees: Employee[];
 }
@@ -54,7 +48,7 @@ export const register = async (
       location,
       relocate
     });
-    
+
     return response.data;
   } catch (error: any) {
     console.error('Registration error:', error.response?.data || error);
@@ -62,25 +56,12 @@ export const register = async (
   }
 };
 
-export const getEmployees = async (): Promise<EmployeesResponse> => {
+export const getCandidates = async (): Promise<EmployeesResponse> => {
   try {
-    console.log("hi");
-    const response: AxiosResponse<EmployeesResponse> = await axiosInstance.get('/employees', { withCredentials: true });
+    const response: AxiosResponse<EmployeesResponse> = await axiosInstance.get('/candidate', { withCredentials: true });
     return response.data;
   } catch (error: any) {
     console.error('Error fetching employees:', error.response?.data || error);
     throw error.response?.data || error;
   }
 };
-
-export const getDashboardData = async (): Promise<Dashboard> => {
-  try {
-    console.log("Fetching dashboard data");
-    const response: AxiosResponse<Dashboard> = await axiosInstance.get('/dashboard', { withCredentials: true });
-    return response.data;
-  } catch (error: any) {
-    console.error('Error fetching dashboard data:', error.response?.data || error);
-    throw error.response?.data || error;
-  }
-};
-

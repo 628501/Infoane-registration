@@ -3,7 +3,7 @@ import Paper from '@mui/material/Paper';
 import { Box, Button, Container, Typography } from '@mui/material';
 import * as XLSX from 'xlsx';
 import { toast } from 'react-toastify';
-import { Employee, getEmployees } from '../UserService/UserService';
+import { Employee, getCandidates } from '../UserService/UserService';
 import { useEffect, useState } from 'react';
 
 const columns: GridColDef[] = [
@@ -69,7 +69,7 @@ export default function CandidatesListingPage() {
     
     const fetchData = async () => {
       try {
-        const response = await getEmployees();
+        const response = await getCandidates();
         setRows(response.employees);
       } catch (error) {
         toast.error('Failed to fetch employees');

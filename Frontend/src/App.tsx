@@ -5,13 +5,16 @@ import Navbar from "./components/Navbar";
 import CandidatesListingPage from "./pages/CandidatesListingPage";
 import CandidateRegistrationPage from "./pages/CandidateRegistrationPage";
 
-const App = () => {  
+const App = () => {
   return (
     <Box>
       <Navbar />
       <Routes>
         <Route path="/" element={<CandidatesListingPage />} />
-        <Route path="/candidate-registration-page" element={<CandidateRegistrationPage />} />
+        <Route
+          path="/candidate-registration-page"
+          element={<CandidateRegistrationPage />}
+        />
         <Route path="/Sign-in" element={<SignInPage />} />
       </Routes>
     </Box>
