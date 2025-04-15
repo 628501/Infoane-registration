@@ -117,10 +117,10 @@ export const getCandidates = async (): Promise<CandidatesResponse> => {
 
 export const checkAuth = async (): Promise<CheckAuthResponse> => {
   try {
-      const { data } = await axiosInstance.get<CheckAuthResponse>('/check-auth');
-      return data;
+    const { data } = await axiosInstance.get<CheckAuthResponse>('/check-auth');
+    return data;
   } catch (error) {
-      console.error("Auth check failed:", error);
-      return { authorized: false };
+    console.error("Auth check failed:", error);
+    return { authorized: false };
   }
 };

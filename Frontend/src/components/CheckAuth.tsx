@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../GlobalContext/GlobalContext";
+import { useAuth } from "../context/GlobalContext"; 
 
 interface CheckAuthProps {
   children: ReactNode;
@@ -13,10 +13,7 @@ function CheckAuth({ children }: CheckAuthProps) {
   if (location.pathname === "/candidate-list" && !isAuthenticated) {
     return <Navigate to="/" replace />;
   }
-  if (
-    location.pathname === "/candidate-registration-page" &&
-    isAuthenticated
-  ) {
+  if (location.pathname === "/candidate-registration-page" && isAuthenticated) {
     return <Navigate to="/candidate-list" replace />;
   }
   if (location.pathname === "/" && isAuthenticated) {

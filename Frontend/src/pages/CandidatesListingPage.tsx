@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import { Box, Button, Container, Typography } from "@mui/material";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
-import { Candidate, getCandidates } from "../UserService/UserService";
+import { Candidate, getCandidates } from "../services/UserService";
 import { useEffect, useState } from "react";
 
 const columns: GridColDef[] = [

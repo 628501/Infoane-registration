@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { register as registerCandidate } from "../UserService/UserService";
+import { register as registerCandidate } from "../services/UserService";
 
 type FormValues = {
   name: string;
@@ -27,7 +27,6 @@ type FormValues = {
 };
 
 const CandidateRegistrationPage = () => {
-  
   const {
     register,
     handleSubmit,
@@ -56,7 +55,6 @@ const CandidateRegistrationPage = () => {
     }
   }, [mobileErr]);
 
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       await registerCandidate(
@@ -75,7 +73,7 @@ const CandidateRegistrationPage = () => {
       reset();
     } catch (err: any) {
       console.log(err.error);
-      if (err.error === "Email already exists" ) {
+      if (err.error === "Email already exists") {
         setEmailError(err.error);
       }
       if (err.error === "Mobile number already exists") {
@@ -97,7 +95,7 @@ const CandidateRegistrationPage = () => {
         mx: "auto",
       }}
     >
-      { formSubmitted ? (
+      {formSubmitted ? (
         <Alert severity="success" sx={{ fontSize: "1rem" }}>
           Registration successful!
         </Alert>
@@ -246,7 +244,7 @@ const CandidateRegistrationPage = () => {
               </RadioGroup>
             )}
           />
-          { errors.relocate && (
+          {errors.relocate && (
             <Typography color="error" fontSize="0.875rem">
               {errors.relocate.message}
             </Typography>

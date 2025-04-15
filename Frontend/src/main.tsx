@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
 import App from "./App";
-import { AuthProvider } from "./GlobalContext/GlobalContext";
+import { AuthProvider } from "./context/GlobalContext";
 
 const rootElement = document.getElementById("root")!;
 const root = createRoot(rootElement);
@@ -14,20 +14,20 @@ const root = createRoot(rootElement);
 root.render(
   <StrictMode>
     <BrowserRouter>
-          <AuthProvider>
-            <App />
-            <ToastContainer
-              position="bottom-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              theme="light"
-            />
-          </AuthProvider>
+      <AuthProvider>
+        <App />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          theme="light"
+        />
+      </AuthProvider>
     </BrowserRouter>
   </StrictMode>
 );

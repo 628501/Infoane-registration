@@ -11,8 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useAuth } from "../GlobalContext/GlobalContext";
-import { loginUser } from "../UserService/UserService";
+import { useAuth } from "../context/GlobalContext";
+import { loginUser } from "../services/UserService";
 
 type FormValues = {
   email: string;
@@ -21,7 +21,13 @@ type FormValues = {
 
 const SignInPage = () => {
   const navigate = useNavigate();
-  const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormValues>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<FormValues>();
   const [showPassword, setShowPassword] = useState(false);
   const [existError, setExistError] = useState("");
   const emailValue = watch("email");
@@ -38,7 +44,7 @@ const SignInPage = () => {
     const { email, password } = data;
     try {
       const result = await loginUser(email, password);
-      setAuth({ authorized: true, name: result.name , email: result.email});
+      setAuth({ authorized: true, name: result.name, email: result.email });
       localStorage.setItem("accessToken", result.accessToken);
       setExistError("");
       reset();

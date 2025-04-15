@@ -11,8 +11,8 @@ import {
 } from "@mui/material";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../GlobalContext/GlobalContext";
-import { logoutUser } from "../UserService/UserService";
+import { useAuth } from "../context/GlobalContext";
+import { logoutUser } from "../services/UserService";
 
 const stringToColor = (string: string) => {
   if (!string) return "#757575";
@@ -29,7 +29,7 @@ const stringToColor = (string: string) => {
 };
 
 function Navbar() {
-  const {authorized, name, setAuth, email} = useAuth();
+  const { authorized, name, setAuth, email } = useAuth();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const avatarInitial = name ? name?.charAt(0).toUpperCase() : "";
   const avatarColor = name ? stringToColor(name) : "";
@@ -40,7 +40,7 @@ function Navbar() {
 
   const handleLogout = () => {
     logoutUser(email!);
-    setAuth({ authorized: false, name: null , email: null});
+    setAuth({ authorized: false, name: null, email: null });
     localStorage.removeItem("accessToken");
   };
 
@@ -60,7 +60,7 @@ function Navbar() {
           display: "flex",
           justifyContent: "space-between",
           paddingX: "1.3rem",
-          background:"#065A9A"
+          background: "#065A9A",
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>

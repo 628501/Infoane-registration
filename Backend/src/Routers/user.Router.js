@@ -80,12 +80,19 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/check-auth", authenticateJWT, authenticateSession, async(req, res) => {
-  if(req.user && req.jwtUser){
-   return res.status(STATUS_OK).json({ authorized: true, name: req.jwtUser, email: req.user });
+router.get(
+  "/check-auth",
+  authenticateJWT,
+  authenticateSession,
+  async (req, res) => {
+    if (req.user && req.jwtUser) {
+      return res
+        .status(STATUS_OK)
+        .json({ authorized: true, name: req.jwtUser, email: req.user });
+    }
+    return res.status(UNAUTHORIZED).json({ authorized: false });
   }
-  return res.status(UNAUTHORIZED).json({ authorized: false });
-})
+);
 
 router.post("/refresh", (req, res) => {
   const refreshToken = req.cookies.refreshToken;
