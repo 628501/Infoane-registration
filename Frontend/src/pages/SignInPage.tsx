@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { useAuth } from "../context/GlobalContext";
+import { useAuth } from "../GlobalContext/GlobalContext";
 import { loginUser } from "../services/UserService";
 
 type FormValues = {

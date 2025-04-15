@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
 import App from "./App";
-import { AuthProvider } from "./context/GlobalContext";
+import { AuthProvider } from "./GlobalContext/GlobalContext";
 
 const rootElement = document.getElementById("root")!;
 const root = createRoot(rootElement);

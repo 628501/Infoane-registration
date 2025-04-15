@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/GlobalContext"; 
+import { useAuth } from "../GlobalContext/GlobalContext"; 
 
 interface CheckAuthProps {
   children: ReactNode;
