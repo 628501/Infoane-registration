@@ -10,10 +10,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { AppDispatch } from "../store/store";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
-import { login } from "../slices/userSlice";
+import { useAuth } from "../GlobalContext/GlobalContext";
+import { loginUser } from "../UserService/UserService";
 
 type FormValues = {
   email: string;
@@ -27,7 +26,7 @@ const SignInPage = () => {
   const [existError, setExistError] = useState("");
   const emailValue = watch("email");
   const passwordValue = watch("password");
-  const dispatch = useDispatch<AppDispatch>();
+  const { setAuth } = useAuth();
 
   useEffect(() => {
     if (existError) {
@@ -38,7 +37,9 @@ const SignInPage = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const { email, password } = data;
     try {
-      await dispatch(login({ email, password })).unwrap();
+      const result = await loginUser(email, password);
+      setAuth({ authorized: true, name: result.name , email: result.email});
+      localStorage.setItem("accessToken", result.accessToken);
       setExistError("");
       reset();
       navigate("/candidate-list");

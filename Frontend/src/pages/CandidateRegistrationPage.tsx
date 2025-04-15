@@ -27,6 +27,7 @@ type FormValues = {
 };
 
 const CandidateRegistrationPage = () => {
+  
   const {
     register,
     handleSubmit,

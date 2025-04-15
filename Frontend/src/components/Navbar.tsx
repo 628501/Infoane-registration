@@ -8,13 +8,11 @@ import {
   Menu,
   Avatar,
   MenuItem,
-  Button,
 } from "@mui/material";
 import logo from "../assets/logo.png";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
-import { clearUser, logout } from "../slices/userSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../GlobalContext/GlobalContext";
+import { logoutUser } from "../UserService/UserService";
 
 const stringToColor = (string: string) => {
   if (!string) return "#757575";
@@ -31,36 +29,29 @@ const stringToColor = (string: string) => {
 };
 
 function Navbar() {
-  const location = useLocation();
-  const user = useSelector((state: RootState) => state.user);
+  const {authorized, name, setAuth, email} = useAuth();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const avatarInitial = user.name ? user.name.charAt(0).toUpperCase() : "";
-  const avatarColor = user.name ? stringToColor(user.name) : "";
+  const avatarInitial = name ? name?.charAt(0).toUpperCase() : "";
+  const avatarColor = name ? stringToColor(name) : "";
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
   const handleLogout = () => {
-    dispatch(logout(user.email!));
-    dispatch(clearUser());
+    logoutUser(email!);
+    setAuth({ authorized: false, name: null , email: null});
+    localStorage.removeItem("accessToken");
   };
 
   const handleCloseMenu = () => {
     setAnchorElUser(null);
   };
-
   const handleUserLogout = () => {
     handleCloseMenu();
     handleLogout();
     navigate("/");
   };
-
-  const handleLogin = () => {
-    navigate("/");
-  };
-
   return (
     <AppBar position="static" elevation={0}>
       <Toolbar
@@ -69,25 +60,19 @@ function Navbar() {
           display: "flex",
           justifyContent: "space-between",
           paddingX: "1.3rem",
+          background:"#065A9A"
         }}
       >
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <img src={logo} height="40px" alt="Logo" />
         </Box>
         <Box sx={{ flexGrow: 0 }}>
-          {user.isLoggedIn && user.isAuthenticated ? (
+          {name && authorized && (
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar sx={{ backgroundColor: avatarColor }}>
                 {avatarInitial}
               </Avatar>
             </IconButton>
-          ) : location.pathname === "/" ||
-            location.pathname === "/candidate-registration-page" ? (
-            ""
-          ) : (
-            <Button variant="contained" color="warning" onClick={handleLogin}>
-              Login
-            </Button>
           )}
           <Menu
             sx={{ mt: "45px" }}

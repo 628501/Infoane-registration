@@ -19,7 +19,7 @@ export const authenticateJWT = (req, res, next) => {
         .status(UNAUTHORIZED)
         .json({ message: "Invalid or expired token" });
     }
-    req.user = user;
+    req.jwtUser = user.id;
     next();
   });
 };
@@ -53,7 +53,7 @@ export const authenticateSession = (req, res, next) => {
       const now = Date.now();
       if (!session || expiryTime < now) {
         connection.query(
-          "DELETE FROM users WHERE sessionId = ?",
+          "UPDATE users SET sessionId = NULL, expiryTime = NULL WHERE sessionId = ?",
           [sessionId],
           (deleteErr) => {
             if (deleteErr) {
@@ -66,7 +66,7 @@ export const authenticateSession = (req, res, next) => {
           .status(UNAUTHORIZED)
           .json({ message: "Session expired or invalid" });
       }
-
+      req.user = session.email;
       next();
     }
   );

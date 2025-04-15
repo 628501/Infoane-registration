@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { RootState } from "../store/store";
-import { useSelector } from "react-redux";
+import { useAuth } from "../GlobalContext/GlobalContext";
 
 interface CheckAuthProps {
   children: ReactNode;
@@ -9,17 +8,18 @@ interface CheckAuthProps {
 
 function CheckAuth({ children }: CheckAuthProps) {
   const location = useLocation();
-  const user = useSelector((state: RootState) => state.user);
-  if (location.pathname === "/candidate-list" && !user.isAuthenticated) {
+  const { authorized } = useAuth();
+  const isAuthenticated = !!authorized;
+  if (location.pathname === "/candidate-list" && !isAuthenticated) {
     return <Navigate to="/" replace />;
   }
   if (
     location.pathname === "/candidate-registration-page" &&
-    user.isAuthenticated
+    isAuthenticated
   ) {
     return <Navigate to="/candidate-list" replace />;
   }
-  if (location.pathname === "/" && user.isAuthenticated) {
+  if (location.pathname === "/" && isAuthenticated) {
     return <Navigate to="/candidate-list" replace />;
   }
   return <>{children}</>;

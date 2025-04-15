@@ -5,6 +5,17 @@ interface RegisterResponse {
   message: string;
   id: number;
 }
+
+interface LoginResponse {
+  name: string;
+  email: string;
+  accessToken: string;
+}
+interface CheckAuthResponse {
+  authorized: boolean;
+  name?: string;
+  email?: string;
+}
 export interface Candidate {
   id: number;
   name: string;
@@ -21,6 +32,39 @@ export interface Candidate {
 interface CandidatesResponse {
   employees: Candidate[];
 }
+
+export const loginUser = async (
+  email: string,
+  password: string
+): Promise<LoginResponse> => {
+  try {
+    const { data } = await axiosInstance.post<LoginResponse>(
+      "/login",
+      { email, password },
+      { withCredentials: true }
+    );
+    return data;
+  } catch (error: any) {
+    console.error("Login failed:", error);
+    throw error.response?.data || new Error("Login failed");
+  }
+};
+
+export const logoutUser = async (
+  email: string
+): Promise<void> => {
+  try {
+    const { data } = await axiosInstance.post<void>(
+      "/logout",
+      { email },
+      { withCredentials: true }
+    );
+    return data;
+  } catch (error: any) {
+    console.error("Logout failed:", error);
+    throw error.response?.data || new Error("Logout failed");
+  }
+};
 
 export const register = async (
   name: string,
@@ -68,5 +112,15 @@ export const getCandidates = async (): Promise<CandidatesResponse> => {
   } catch (error: any) {
     console.error("Error fetching employees:", error.response?.data || error);
     throw error.response?.data || error;
+  }
+};
+
+export const checkAuth = async (): Promise<CheckAuthResponse> => {
+  try {
+      const { data } = await axiosInstance.get<CheckAuthResponse>('/check-auth');
+      return data;
+  } catch (error) {
+      console.error("Auth check failed:", error);
+      return { authorized: false };
   }
 };
