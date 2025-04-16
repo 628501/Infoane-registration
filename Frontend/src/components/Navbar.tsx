@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../GlobalContext/GlobalContext";
+import { useAuth } from "../context/GlobalContext";
 import { logoutUser } from "../services/UserService";
 
 const stringToColor = (string: string) => {
