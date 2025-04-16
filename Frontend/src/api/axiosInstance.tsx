@@ -2,7 +2,7 @@ import axios from "axios";
  
 const baseURL =
   process.env.NODE_ENV === "production"
-    ? "https://devopsinfoane.site/api/users"
+    ? "http://devopsinfoane.site/api/users"
     : "http://localhost:5000/api/users";
  
 const axiosInstance = axios.create({
