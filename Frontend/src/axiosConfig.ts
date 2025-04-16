@@ -1,7 +1,7 @@
 import axios from "axios";
- 
+
 axios.defaults.baseURL =
-  process.env.NODE_ENV === "production"
-    ? "http://devopsinfoane.site"
-    : "http://localhost:5000";
- 
+     import.meta.env.MODE === "production"
+          ? import.meta.env.VITE_PROD
+          : import.meta.env.VITE_LOCAL;
+

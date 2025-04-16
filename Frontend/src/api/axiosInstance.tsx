@@ -1,15 +1,15 @@
 import axios from "axios";
- 
+
 const baseURL =
-  process.env.NODE_ENV === "production"
-    ? "http://devopsinfoane.site/api/users"
-    : "http://localhost:5000/api/users";
- 
+  import.meta.env.MODE === "production"
+    ? import.meta.env.VITE_BAC_PROD
+    : import.meta.env.VITE_BAC;
+
 const axiosInstance = axios.create({
   baseURL: baseURL,
   withCredentials: true,
 });
- 
+
 axiosInstance.interceptors.request.use(
   (config) => {
     config.withCredentials = true;
@@ -23,7 +23,7 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
- 
+
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
@@ -55,6 +55,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
- 
+
 export default axiosInstance;
- 
