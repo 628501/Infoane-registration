@@ -52,7 +52,7 @@ export default function CandidatesListingPage() {
         const response = await getCandidates();
         setRows(response.employees);
       } catch (error) {
-        toast.error("Failed to fetch employees");
+        toast.error("Failed to fetch Candidates");
       }
     };
     fetchData();
