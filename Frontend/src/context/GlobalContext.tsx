@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
   ReactNode,
+  useCallback,
 } from "react";
 import { checkAuth as fetchAuthStatus } from "../services/UserService";
 
@@ -38,24 +39,29 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     email: null,
   });
 
-  const setAuth = (authData: {
-    authorized: boolean;
-    name: string | null;
-    email: string | null;
-  }) => {
-    setAuthState(authData);
-  };
+  const setAuth = useCallback(
+    (authData: {
+      authorized: boolean;
+      name: string | null;
+      email: string | null;
+    }) => {
+      setAuthState(authData);
+    },
+    []
+  );
 
   useEffect(() => {
     const loadAuth = async () => {
       try {
-        const fetch = localStorage.getItem("accessToken");
-        if (fetch) {
+        const token = localStorage.getItem("accessToken");
+        if (token) {
           const data = await fetchAuthStatus();
+          const userName = data.name ?? null;
+
           if (data.authorized) {
             setAuth({
               authorized: true,
-              name: data.name ?? null,
+              name: userName,
               email: data.email ?? null,
             });
           } else {
@@ -69,7 +75,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     loadAuth();
-  }, []);
+  }, [setAuth]);
 
   return (
     <AuthContext.Provider value={{ ...auth, setAuth }}>
