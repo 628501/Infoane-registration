@@ -12,7 +12,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/GlobalContext";
-import { loginUser } from "../services/UserService";
+import { getCSRFToken, loginUser } from "../services/UserService";
 
 type FormValues = {
   email: string;
@@ -43,6 +43,7 @@ const SignInPage = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const { email, password } = data;
     try {
+      await getCSRFToken(); 
       const result = await loginUser(email, password);
       setAuth({ authorized: true, name: result.name, email: result.email });
       localStorage.setItem("accessToken", result.accessToken);

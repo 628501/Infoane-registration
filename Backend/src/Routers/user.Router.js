@@ -57,20 +57,20 @@ router.post("/login", async (req, res) => {
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      secure: false,
+      sameSite: "Strict",
     });
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      secure: false,
+      sameSite: "Strict",
     });
 
     res.cookie("sessionId", sessionId, {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      secure: false,
+      sameSite: "Strict",
     });
 
     res.json({ name: user.name, accessToken, email: user.email });
@@ -78,6 +78,10 @@ router.post("/login", async (req, res) => {
     console.error("Login error:", err);
     res.status(SERVER_ERROR).json({ error: "Internal server error" });
   }
+});
+
+router.get("/csrf-token", (req, res) => {
+  res.json({ csrfToken: req.csrfToken() });
 });
 
 router.get(
@@ -107,8 +111,8 @@ router.post("/refresh", (req, res) => {
 
     res.cookie("accessToken", newAccessToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      secure: false,
+      sameSite: "Strict",
     });
 
     res.json({ accessToken: newAccessToken });

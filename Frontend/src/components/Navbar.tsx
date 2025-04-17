@@ -12,7 +12,7 @@ import {
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/GlobalContext";
-import { logoutUser } from "../services/UserService";
+import { getCSRFToken, logoutUser } from "../services/UserService";
 
 const stringToColor = (string: string) => {
   if (!string) return "#757575";
@@ -38,7 +38,8 @@ function Navbar() {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async() => {
+    await getCSRFToken(); 
     logoutUser(email!);
     setAuth({ authorized: false, name: null, email: null });
     localStorage.removeItem("accessToken");

@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import mysql from "mysql2";
 import path from "path";
+import csrf from "csurf";
 import { fileURLToPath } from "url";
 
 dotenv.config();
@@ -40,6 +41,7 @@ app.use(
     origin: [process.env.LOCAL, process.env.IP, process.env.PROD],
   })
 );
+app.use(csrf({ cookie: true }));
 
 app.use("/api/users", userRouter);
 
