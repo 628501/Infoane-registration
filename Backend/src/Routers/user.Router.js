@@ -264,6 +264,7 @@ router.post("/logout", (req, res) => {
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");
       res.clearCookie("sessionId");
+      res.clearCookie("_csrf"); 
       res.sendStatus(STATUS_OK);
     }
   );
