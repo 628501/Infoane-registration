@@ -66,18 +66,6 @@ export const logoutUser = async (
   }
 };
 
-export const getCSRFToken = async (): Promise<void> => {
-  try {
-    const res = await axiosInstance.get("/csrf-token", { withCredentials: true });
-    const token = res.data.csrfToken;
-    axiosInstance.defaults.headers.common["X-CSRF-Token"] = token;
-  } catch (error) {
-    console.error("Failed to fetch CSRF token", error);
-    throw error;
-  }
-};
-
-
 export const register = async (
   name: string,
   email: string,
