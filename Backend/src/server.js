@@ -5,6 +5,7 @@ import userRouter from "./Routers/user.Router.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import csurf from "csurf";
 import mysql from "mysql2";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -40,6 +41,14 @@ app.use(
     origin: [process.env.LOCAL, process.env.IP, process.env.PROD],
   })
 );
+const csrfProtection = csurf({
+  cookie: {
+    httpOnly: true,
+    sameSite: "Lax",
+    secure: false,
+  },
+});
+app.use(csrfProtection);
 
 app.use("/api/users", userRouter);
 

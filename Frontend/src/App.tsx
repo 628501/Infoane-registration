@@ -7,10 +7,16 @@ import CandidatesListingPage from "./pages/CandidatesListingPage";
 import CandidateRegistrationPage from "./pages/CandidateRegistrationPage";
 import CheckAuth from "./components/CheckAuth";
 import CircularProgressBar from "./components/CircularProgressBar";
+import { fetchCsrfToken } from "./services/UserService";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
+
+  useEffect(() => {
+    fetchCsrfToken();
+  }, []);
+  
   useEffect(() => {
     if (
       location.pathname === "/" ||

@@ -38,6 +38,7 @@ export const loginUser = async (
   password: string
 ): Promise<LoginResponse> => {
   try {
+    await fetchCsrfToken();
     const { data } = await axiosInstance.post<LoginResponse>(
       "/login",
       { email, password },
@@ -54,6 +55,7 @@ export const logoutUser = async (
   email: string
 ): Promise<void> => {
   try {
+    await fetchCsrfToken();
     const { data } = await axiosInstance.post<void>(
       "/logout",
       { email },
@@ -112,6 +114,14 @@ export const getCandidates = async (): Promise<CandidatesResponse> => {
   } catch (error: any) {
     console.error("Error fetching employees:", error.response?.data || error);
     throw error.response?.data || error;
+  }
+};
+
+export const fetchCsrfToken = async (): Promise<void> => {
+  try {
+    await axiosInstance.get("/csrf-token", { withCredentials: true });
+  } catch (err) {
+    console.error("Failed to fetch CSRF token", err);
   }
 };
 

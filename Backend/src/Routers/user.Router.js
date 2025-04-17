@@ -80,6 +80,15 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/csrf-token", (req, res) => {
+  res.cookie("XSRF-TOKEN", req.csrfToken(), {
+    httpOnly: false,
+    sameSite: "Lax",
+    secure: false,
+  });
+  res.status(200).json({ message: "CSRF token set" });
+});
+
 router.get(
   "/check-auth",
   authenticateJWT,
@@ -261,6 +270,7 @@ router.post("/logout", (req, res) => {
       res.clearCookie("refreshToken");
       res.clearCookie("sessionId");
       res.clearCookie("_csrf"); 
+      res.clearCookie("XSRF-TOKEN");
       res.sendStatus(STATUS_OK);
     }
   );
