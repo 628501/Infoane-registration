@@ -1,15 +1,15 @@
 import axios from "axios";
-
+ 
 const baseURL =
   import.meta.env.MODE === "production"
     ? import.meta.env.VITE_BAC_PROD
     : import.meta.env.VITE_BAC;
-
+ 
 const axiosInstance = axios.create({
   baseURL: baseURL,
   withCredentials: true,
 });
-
+ 
 axiosInstance.interceptors.request.use(
   (config) => {
     config.withCredentials = true;
@@ -21,21 +21,21 @@ axiosInstance.interceptors.request.use(
       .split("; ")
       .find((row) => row.startsWith("XSRF-TOKEN="))
       ?.split("=")[1];
-
+ 
     if (csrfToken) {
       config.headers["X-CSRF-Token"] = csrfToken;
     }
-
+ 
     return config;
   },
   (error) => {
     return Promise.reject(error);
   }
 );
-
+ 
 const isAuthEndpoint = (url: string) =>
-  url.includes("/login") ||  url.includes("/check-auth");
-
+  url.includes("/login");
+ 
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
@@ -66,5 +66,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
+ 
 export default axiosInstance;
