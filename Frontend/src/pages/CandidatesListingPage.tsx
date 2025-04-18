@@ -1,4 +1,3 @@
-import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import {
   Box,
   Button,
@@ -7,9 +6,17 @@ import {
   TextField,
   Typography,
   Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
+import { DataGrid, GridColDef, useGridApiRef } from "@mui/x-data-grid";
 import DownloadIcon from "@mui/icons-material/Download";
 import ClearIcon from "@mui/icons-material/Clear";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 import { Candidate, getCandidates } from "../services/UserService";
@@ -48,6 +55,9 @@ export default function CandidatesListingPage() {
     sslc: "",
     hsc: "",
   });
+
+  const [openDialog, setOpenDialog] = useState(false);
+  const registrationLink = "http://localhost:5173/candidate-registration-page";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,6 +100,11 @@ export default function CandidatesListingPage() {
     toast.success("Downloaded successfully!");
   };
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(registrationLink);
+    toast.success("Link copied to clipboard!");
+  };
+
   return (
     <Container maxWidth="xl" sx={{ mt: 2 }}>
       <Box sx={{ textAlign: "center", mb: 2 }}>
@@ -100,59 +115,81 @@ export default function CandidatesListingPage() {
 
       <Paper
         elevation={0}
-        sx={{ p: 3, mb: 3, borderRadius: 3, border: "1px solid lightgray" }}
+        sx={{
+          p: 3,
+          mb: 3,
+          borderRadius: 3,
+          border: "1px solid lightgray",
+          display: "flex",
+          flexDirection: "row",
+          flexWrap: "wrap",
+          gap: 2,
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
       >
+
         <Box
           sx={{
             display: "flex",
-            flexWrap: "wrap",
             gap: 2,
-            justifyContent: "space-between",
+            flexWrap: "wrap",
+            alignItems: "center",
+            flexGrow: 1,
+          }}
+        >
+          <TextField
+            label="Degree %"
+            type="number"
+            size="small"
+            value={filters.degree}
+            onChange={(e) => setFilters({ ...filters, degree: e.target.value })}
+          />
+          <TextField
+            label="SSLC %"
+            type="number"
+            size="small"
+            value={filters.sslc}
+            onChange={(e) => setFilters({ ...filters, sslc: e.target.value })}
+          />
+          <TextField
+            label="HSC %"
+            type="number"
+            size="small"
+            value={filters.hsc}
+            onChange={(e) => setFilters({ ...filters, hsc: e.target.value })}
+          />
+          <Tooltip title="Clear Filters">
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ height: 40 }}
+              onClick={() => setFilters({ degree: "", sslc: "", hsc: "" })}
+              startIcon={<ClearIcon />}
+            >
+              Clear
+            </Button>
+          </Tooltip>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            flexWrap: "wrap",
             alignItems: "center",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              gap: 2,
-              flexWrap: "wrap",
-              alignItems: "center",
-            }}
-          >
-            <TextField
-              label="Degree %"
-              type="number"
-              size="small"
-              value={filters.degree}
-              onChange={(e) =>
-                setFilters({ ...filters, degree: e.target.value })
-              }
-            />
-            <TextField
-              label="SSLC %"
-              type="number"
-              size="small"
-              value={filters.sslc}
-              onChange={(e) => setFilters({ ...filters, sslc: e.target.value })}
-            />
-            <TextField
-              label="HSC %"
-              type="number"
-              size="small"
-              value={filters.hsc}
-              onChange={(e) => setFilters({ ...filters, hsc: e.target.value })}
-            />
-            <Tooltip title="Clear Filters">
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => setFilters({ degree: "", sslc: "", hsc: "" })}
-                startIcon={<ClearIcon />}
-              >
-                Clear
-              </Button>
-            </Tooltip>
-          </Box>
+          <Tooltip title="Get Registration Link">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ height: 40 }}
+              onClick={() => setOpenDialog(true)}
+            >
+              Get Registration Link
+            </Button>
+          </Tooltip>
 
           <Tooltip title="Download Selected">
             <Button
@@ -197,6 +234,34 @@ export default function CandidatesListingPage() {
           }}
         />
       </Paper>
+
+      <Dialog 
+      maxWidth="xs"
+      fullWidth
+      open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Registration Link</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            value={registrationLink}
+            InputProps={{
+              readOnly: true,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={handleCopy}>
+                    <ContentCopyIcon />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }
