@@ -73,8 +73,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setAuth({ authorized: false, name: null, email: null });
       }
     };
-
-    loadAuth();
+    if (location.pathname !== "/") {
+      loadAuth();
+    }
   }, [setAuth]);
 
   return (
