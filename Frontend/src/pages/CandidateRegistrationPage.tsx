@@ -34,7 +34,11 @@ const CandidateRegistrationPage = () => {
     reset,
     watch,
     control,
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({
+    defaultValues: {
+      relocate: false,
+    },
+  });
 
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [emailError, setEmailError] = useState("");
@@ -44,15 +48,11 @@ const CandidateRegistrationPage = () => {
   const mobileErr = watch("mobile");
 
   useEffect(() => {
-    if (emailError) {
-      setEmailError("");
-    }
+    if (emailError) setEmailError("");
   }, [emailErr]);
 
   useEffect(() => {
-    if (mobileError) {
-      setMobileError("");
-    }
+    if (mobileError) setMobileError("");
   }, [mobileErr]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -72,13 +72,8 @@ const CandidateRegistrationPage = () => {
       setFormSubmitted(true);
       reset();
     } catch (err: any) {
-      console.log(err.error);
-      if (err.error === "Email already exists") {
-        setEmailError(err.error);
-      }
-      if (err.error === "Mobile number already exists") {
-        setMobileError(err.error);
-      }
+      if (err.error === "Email already exists") setEmailError(err.error);
+      if (err.error === "Mobile number already exists") setMobileError(err.error);
     }
   };
 
@@ -103,16 +98,9 @@ const CandidateRegistrationPage = () => {
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "25px",
-          }}
+          sx={{ display: "flex", flexDirection: "column", gap: "25px" }}
         >
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: "bold", color: "#333", textAlign: "center" }}
-          >
+          <Typography variant="h5" sx={{ fontWeight: "bold", color: "#333", textAlign: "center" }}>
             Candidate Registration
           </Typography>
 
@@ -140,9 +128,7 @@ const CandidateRegistrationPage = () => {
             label="Mobile"
             type="tel"
             InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">+91</InputAdornment>
-              ),
+              startAdornment: <InputAdornment position="start">+91</InputAdornment>,
             }}
             {...register("mobile", {
               required: "Mobile number is required",
@@ -231,16 +217,8 @@ const CandidateRegistrationPage = () => {
             rules={{ required: "Please choose an option" }}
             render={({ field }) => (
               <RadioGroup row {...field}>
-                <FormControlLabel
-                  value={true}
-                  control={<Radio />}
-                  label="Yes"
-                />
-                <FormControlLabel
-                  value={false}
-                  control={<Radio />}
-                  label="No"
-                />
+                <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                <FormControlLabel value="false" control={<Radio />} label="No" />
               </RadioGroup>
             )}
           />
