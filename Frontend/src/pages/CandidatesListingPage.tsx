@@ -127,7 +127,7 @@ export default function CandidatesListingPage() {
           <Typography
             variant="h5"
             fontWeight="bold"
-            color="primary.dark"
+            color="primary"
             sx={{
               width: { xs: "100%", sm: "auto" },
             }}
@@ -144,14 +144,14 @@ export default function CandidatesListingPage() {
               width: { xs: "100%", sm: "auto" },
             }}
           >
-            <Tooltip title="Get Registration Link">
+            <Tooltip title="Registration Link">
               <Button
                 variant="contained"
                 color="primary"
                 sx={{ height: 40 }}
                 onClick={() => setOpenDialog(true)}
               >
-                Get Registration Link
+                Get Apply Link
               </Button>
             </Tooltip>
 
