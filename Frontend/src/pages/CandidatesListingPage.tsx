@@ -146,6 +146,7 @@ export default function CandidatesListingPage() {
           >
             <Tooltip title="Registration Link">
               <Button
+              disableElevation
                 variant="contained"
                 color="primary"
                 sx={{ height: 40 }}
@@ -157,6 +158,7 @@ export default function CandidatesListingPage() {
 
             <Tooltip title="Download Selected">
               <Button
+                disableElevation
                 variant="contained"
                 color="primary"
                 onClick={handleDownload}
