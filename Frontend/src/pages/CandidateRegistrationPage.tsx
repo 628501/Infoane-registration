@@ -23,7 +23,7 @@ type FormValues = {
   sslc_percentage: number;
   hsc_percentage: number;
   location: string;
-  relocate: boolean;
+  relocate: boolean | null;
 };
 
 const CandidateRegistrationPage = () => {
@@ -36,7 +36,7 @@ const CandidateRegistrationPage = () => {
     control,
   } = useForm<FormValues>({
     defaultValues: {
-      relocate: false,
+      relocate: null,
     },
   });
 
@@ -67,7 +67,7 @@ const CandidateRegistrationPage = () => {
         data.sslc_percentage,
         data.hsc_percentage,
         data.location,
-        data.relocate
+        data.relocate!
       );
       setFormSubmitted(true);
       reset();
