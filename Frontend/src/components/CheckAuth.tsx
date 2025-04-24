@@ -19,6 +19,7 @@ function CheckAuth({ children }: CheckAuthProps) {
   if (location.pathname === "/" && isAuthenticated) {
     return <Navigate to="/candidate-list" replace />;
   }
+
   return <>{children}</>;
 }
 
