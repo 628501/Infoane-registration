@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
 );
 
 const isAuthEndpoint = (url: string) =>
-  url.includes("/") || url.includes("/login");
+  url.includes("/login");
 
 axiosInstance.interceptors.response.use(
   (response) => {
