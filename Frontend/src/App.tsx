@@ -7,6 +7,7 @@ import CandidatesListingPage from "./pages/CandidatesListingPage";
 import CandidateRegistrationPage from "./pages/CandidateRegistrationPage";
 import CheckAuth from "./components/CheckAuth";
 import CircularProgressBar from "./components/CircularProgressBar";
+import PageNotFound from "./pages/PageNotFound";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,14 +35,17 @@ const App = () => {
       {!isLoading ? (
         <Routes>
           <Route
+            caseSensitive
             path="/candidate-list"
             element={
               <CheckAuth>
                 <CandidatesListingPage />
               </CheckAuth>
+
             }
           />
           <Route
+            caseSensitive
             path="/candidate-registration-page"
             element={
               <CheckAuth>
@@ -55,6 +59,12 @@ const App = () => {
               <CheckAuth>
                 <SignInPage />
               </CheckAuth>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              <PageNotFound />
             }
           />
         </Routes>

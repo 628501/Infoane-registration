@@ -8,9 +8,10 @@ import {
   Menu,
   Avatar,
   MenuItem,
+  Button,
 } from "@mui/material";
 import logo from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/GlobalContext";
 import { logoutUser } from "../services/UserService";
 
@@ -30,6 +31,7 @@ const stringToColor = (string: string) => {
 
 function Navbar() {
   const { authorized, name, setAuth, email } = useAuth();
+  const location = useLocation();
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const avatarInitial = name ? name?.charAt(0).toUpperCase() : "";
   const avatarColor = name ? stringToColor(name) : "";
