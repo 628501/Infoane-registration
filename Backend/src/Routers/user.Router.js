@@ -131,6 +131,7 @@ router.post("/register", async (req, res) => {
 
   try {
     const canRelocate = relocate === true || relocate === "true" ? "Yes" : "No";
+    const formattedDate = new Date().toLocaleDateString("en-GB").split("/").join("-");
 
     const emailCheckQuery =
       "SELECT * FROM candidate_registration WHERE email = ?";
@@ -162,8 +163,8 @@ router.post("/register", async (req, res) => {
 
           const insertQuery = `
           INSERT INTO candidate_registration 
-          (name, email, mobile, degree, department, degree_percentage, sslc_percentage, hsc_percentage, location, relocate)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          (name, email, mobile, degree, department, degree_percentage, sslc_percentage, hsc_percentage, location, relocate, submitted_at)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
           connection.query(
@@ -179,6 +180,7 @@ router.post("/register", async (req, res) => {
               hsc_percentage,
               location,
               canRelocate,
+              formattedDate
             ],
             (insertErr, insertResult) => {
               if (insertErr) {
