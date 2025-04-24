@@ -24,15 +24,17 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+const isAuthEndpoint = (url: string) =>
+  url.includes("/") || url.includes("/login");
+
 axiosInstance.interceptors.response.use(
   (response) => {
     return response;
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response && error.response.status === 401) {
-      const token = localStorage.getItem("accessToken");
-      if (!originalRequest._retry && token) {
+    if (error.response && error.response.status === 401 && !isAuthEndpoint(originalRequest.url)) {
+      if (!originalRequest._retry) {
         originalRequest._retry = true;
         try {
           const refreshResponse = await axiosInstance.post(
